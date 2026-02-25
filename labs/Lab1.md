@@ -92,7 +92,7 @@ Tip:
 
 **Goal:** Apply basic threading to remove the single-client bottleneck from the Echo Server presented in the lecture.
 
-Start from the single-threaded blocking echo server implementation available [here]() (or an equivalent one).
+Start from the single-threaded blocking echo server implementation available [here](https://github.com/isel-leic-pc/s2526v-li44d/blob/a29aff70d432bd7dbc8c7ef34bb7d99addf5caa8/demos/EchoServer/src/main/kotlin/Main.kt) (or an equivalent one).
 
 Task:
 1. Modify the server so that it keeps accepting clients in a loop.
