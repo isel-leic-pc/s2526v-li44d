@@ -56,6 +56,7 @@ Questions to reflect on:
 
 Tip:
  * Experiment with different values of `P` in `startAndObserve` to see how it affects the observed states. 
+ * Experiment with different positions of the call to `Thread.sleep()` in the polling loop (e.g. sleep before reading the target thread state, sleep after reading the target thread state, or not sleeping at all) and observe how it affects the observed states.
 
 ### Exercise 3
 
