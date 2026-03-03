@@ -29,7 +29,7 @@
   - [Lecture video](https://www.youtube.com/watch?v=B5s09qoZxYU)
   - [Laboratory 1](./labs/Lab1.md)
 
-### Week 2 - Threading on the JVM: data parallelism (preview)
+### Week 2 - Threading on the JVM: data parallelism
 - Review
   - Week 1 recap 
   - Lab 1 Exercise 5 solution discussion (our first concurrent echo server)
@@ -44,5 +44,5 @@
 - Compute bound vs I/O bound tasks
   - Discussion of the limitations of the "one thread per client" approach for our echo server
 - For reference:
-  - Lecture video (coming soon)
+  - [Lecture video](https://www.youtube.com/watch?v=I1AuBdQSM-Y&list=PL8XxoCaL3dBi0fxcQdYiMydEYaQkOfzi5&index=2)
   - [Laboratory 2](./labs/Lab2.md)
