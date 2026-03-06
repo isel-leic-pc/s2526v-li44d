@@ -104,3 +104,5 @@ Questions to reflect on:
 
 Tip:
 * Use a large enough input so that `T(1)` is at least a few hundred milliseconds, otherwise measurement noise will dominate.
+* Consider running each configuration multiple times and averaging results to reduce noise.
+* Change the implementation of the `parallelSum` function to accumulate partial sums directly into the the partials array without using a local variable, and observe how this affects speedup due to increased contention on shared memory.
