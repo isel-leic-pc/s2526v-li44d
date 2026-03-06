@@ -63,7 +63,8 @@ Questions to reflect on:
 * What does this experiment tell you about `join()` as a correctness boundary?
 
 Tip:
-* Add a small sleep (e.g., 1–5ms) inside the worker loop (or process a large enough array) to make the issue easier to observe.
+* Add a small sleep (e.g., 1–5ms) between starting the workers and reducing `partials` to increase the likelihood of observing non-deterministic results.
+* Try to use a large input array (e.g., 100-500 million elements) to increase the chance of observing non-determinism due to longer worker execution times.
 
 ### Exercise 4
 
