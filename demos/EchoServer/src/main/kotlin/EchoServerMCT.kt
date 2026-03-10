@@ -4,8 +4,6 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.util.concurrent.atomic.AtomicInteger
 
-val serverPort = 9000
-
 fun main() {
     val serverPort = 9000
     // Launches infinite server loop spawning per-client threads

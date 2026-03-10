@@ -1,10 +1,22 @@
 package palbp.demos.pc.isel
 
+import kotlin.concurrent.thread
+
 fun main() {
-    val dataset = (1..200_000_000).toList()
-    val start = System.nanoTime()
-    println("Starting counting...")
-    val count = count(dataset, 5)
-    val end = System.nanoTime() - start
-    println("Count is $count. Took ${end / 1_000_000} ms")
+
+    val threadCount = 4
+    val list = SafeLinkedList<Int>()
+
+    val threads = Array(size = threadCount) {
+        thread {
+            repeat(times = 1_000_000) {
+                list.addLast(1)
+            }
+        }
+    }
+
+    threads.forEach { it.join() }
+
+    println(list.size)
+    println(list.sum())
 }
