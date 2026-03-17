@@ -1,4 +1,3 @@
-
 ## Lab 2 — Threading on the JVM: Data Parallelism
 
 This lab focuses on the class of problems classified as **data parallelism**. The main goal is to help to understand how we can obtain **deterministic outcomes** even though concurrent execution is **non-deterministic** and interleavings vary across runs, as observed in [Lab 1](./Lab1.md). We will achieve this by structuring our computations according to the **fork–join pattern** (also known as **embarrassingly-parallel + reduce**), and by using **synchronization with completion** using `join()`.

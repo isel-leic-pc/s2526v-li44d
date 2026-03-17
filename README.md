@@ -67,5 +67,5 @@
 		- Examples: loss of increments, loss of list insertions
 - For reference:
 	- [Lecture video 1](https://www.youtube.com/live/AVloVHlMffs?si=GAijPwvK4SaqXBRM)
-	- Lecture video 2 _(coming soon)_
+	- [Lecture video 2](https://www.youtube.com/watch?v=8W7yFgDsXuc)
 	- [Assignment 1](./assignments/first-assignment.adoc)

@@ -15,7 +15,6 @@ class SafeCounter {
     fun inc() {
         guard.withLock {
             count += 1
-
         }
     }
 
