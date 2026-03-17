@@ -69,3 +69,22 @@
 	- [Lecture video 1](https://www.youtube.com/live/AVloVHlMffs?si=GAijPwvK4SaqXBRM)
 	- [Lecture video 2](https://www.youtube.com/watch?v=8W7yFgDsXuc)
 	- [Assignment 1](./assignments/first-assignment.adoc)
+
+### Week 4 - Threading on the JVM: Synchronization
+- Part 1: Threading on the JVM: synchronization
+	- Synchronization on the JVM
+		- Data synchronization
+		- Control synchronization
+	- Control synchronization: synchronizers
+		- Purpose and motivation
+		- Example 1: `CountDownLatch`
+		- Example 2: producer-consumer with `BlockingQueue`
+			- `put`/`take`, bounded capacity, and backpressure
+- Part 2: Threading on the JVM: monitors
+	- Building custom synchronizers using Lampson and Redell monitors
+		- Purpose and motivation
+		- Lampson and Redell semantics
+	- Guarded blocks and condition predicates
+- For reference:
+	- Lecture video _(coming soon)_
+	- [Laboratory 3](labs/Lab3.md)
