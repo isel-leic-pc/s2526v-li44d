@@ -46,18 +46,25 @@ Status:
 
 ## 2. Create Initial Package Skeleton
 
-- [ ] Create/confirm package folders:
+- [x] Create/confirm package folders:
   - `ui/`
   - `ui/components/`
   - `viewmodel/`
   - `domain/`
-- [ ] Move top-level UI entry into `ui/` (for example: `AppScreen`).
-- [ ] Keep file names aligned with plan naming (`ImageViewerUiState`, `ImageViewerEvent`, `ImageViewerViewModel`).
+- [x] Move top-level UI entry into `ui/` (for example: `AppScreen`).
+- [x] Create placeholder ViewModel file:
+  - `viewmodel/ImageViewerViewModel.kt`
 
 Acceptance criteria:
 
-- Project tree reflects target architecture for upcoming milestones.
+- Project tree reflects target package architecture for upcoming milestones.
 - Names are consistent with plan to avoid refactor churn.
+
+Status:
+
+- Completed on 2026-03-17.
+- Build verification:
+  - `export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./gradlew :composeApp:compileKotlinJvm`
 
 ---
 

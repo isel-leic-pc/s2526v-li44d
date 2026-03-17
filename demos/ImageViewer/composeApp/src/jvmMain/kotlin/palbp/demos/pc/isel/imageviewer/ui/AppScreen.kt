@@ -1,4 +1,4 @@
-package palbp.demos.pc.isel.imageviewer
+package palbp.demos.pc.isel.imageviewer.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 @Preview
-fun ImageViewerAppShell() {
+fun AppScreen() {
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
