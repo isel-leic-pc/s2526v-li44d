@@ -86,5 +86,5 @@
 		- Lampson and Redell semantics
 	- Guarded blocks and condition predicates
 - For reference:
-	- Lecture video _(coming soon)_
+	- [Lecture video](https://www.youtube.com/live/y8y7SxmH324?si=Up9JyhpS1O7TrMLJ)
 	- [Laboratory 3](labs/Lab3.md)
