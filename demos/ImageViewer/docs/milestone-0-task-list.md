@@ -70,74 +70,89 @@ Status:
 
 ## 3. Define Hoisted UI State Model
 
-- [ ] Create `ImageViewerUiState` with placeholder-first fields:
-  - app title / static labels (optional)
-  - `selectedProcessingMode` (default placeholder value)
-  - `renderState` (default `Idle`)
-  - `hasImageLoaded` (false for now) or equivalent placeholder flags
-  - placeholder filter-control state collection (can be empty)
-- [ ] Ensure state type is immutable from UI perspective.
-- [ ] Add initial state factory/default constructor strategy.
+- [x] Expose `ImageViewerScreenState` directly from `ImageViewerViewModel` as snapshot state.
+- [x] Keep transition logic driven by `ImageViewerScreenState` state-machine operations.
+- [x] Postpone `ImageViewerUiState` wrapper until additional UI-specific properties are needed.
+- [x] Postpone non-essential UI fields (`selectedProcessingMode`, filter controls, render metrics) to later steps.
 
 Acceptance criteria:
 
-- UI can render entirely from one state object.
+- UI can render from a single hoisted state object (`ImageViewerScreenState` for now).
+- State remains immutable from the UI perspective.
 - No direct mutable UI state inside leaf composables.
+
+Status:
+
+- Completed on 2026-03-18 with direct `ImageViewerScreenState` exposure in `ImageViewerViewModel`.
+- Verification:
+  - `export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./gradlew :composeApp:jvmTest`
 
 ---
 
 ## 4. Define Event Contract (State Machine Inputs)
 
-- [ ] Create `ImageViewerEvent` sealed type with Milestone-0-needed events:
-  - `OpenImageClicked`
-  - `SaveImageClicked`
-  - `ResetClicked`
-  - `ProcessingModeChanged(mode)`
-  - placeholder filter interaction events (optional stubs)
-- [ ] Keep event names intention-revealing and aligned with user actions.
-- [ ] Do not implement file/pipeline logic yet; only event wiring contract.
+- [x] Define operation-based state-machine inputs on `ImageViewerViewModel`:
+  - `requestLoadImage(imageName)`
+  - `dismissError()`
+  - `reset()`
+- [x] Keep transition API intention-revealing and aligned with user actions.
+- [x] Implement only image-loading state-machine flow for now.
 
 Acceptance criteria:
 
-- UI interactions dispatch typed events instead of mutating state inline.
-- Event list is sufficient for shell interactivity and future extension.
+- UI can invoke ViewModel operations instead of mutating state inline.
+- Operation set is sufficient for current shell image-load flow and extension.
+
+Status:
+
+- Completed on 2026-03-18 with operation-based API (no `ImageViewerEvent` type in this iteration).
 
 ---
 
 ## 5. Introduce ViewModel Stub and Wiring
 
-- [ ] Create `ImageViewerViewModel` with:
-  - exposed `uiState`
-  - `onEvent(event: ImageViewerEvent)` entry point
-- [ ] Implement minimal reducer behavior for shell-level interactions only (e.g., processing mode selection).
-- [ ] Keep side effects as TODO placeholders for future milestones.
-- [ ] Ensure ViewModel acts as single orchestrator between UI and future processing layer.
+- [x] Create `ImageViewerViewModel` with exposed screen state:
+  - `var state by mutableStateOf(...)`
+- [x] Expose operation-based transition methods (`requestLoadImage`, `dismissError`, `reset`).
+- [x] Implement asynchronous load transition path using dedicated threads.
+- [x] Keep non-load concerns for later milestones.
 
 Acceptance criteria:
 
-- UI reads state from ViewModel and sends events to ViewModel.
+- UI reads state from ViewModel and invokes transition operations on ViewModel.
 - No business logic hardcoded in composables.
+
+Status:
+
+- In progress (updated on 2026-03-18): loading state machine and async load implemented.
+- Pending in later milestones: filter/save transitions and cancellation model.
 
 ---
 
 ## 6. Build Base Shell Layout
 
-- [ ] Compose top bar with disabled or placeholder actions:
+- [x] Compose top bar with disabled or placeholder actions:
   - `Open`
   - `Save As (PNG)`
   - `Reset`
-- [ ] Compose main content split:
+- [x] Compose main content split:
   - left preview area with placeholders for `Original` and `Processed`
   - right control area placeholder for processing mode and filter controls
-- [ ] Compose status/footer area:
+- [x] Compose status/footer area:
   - render state indicator
   - placeholder file metadata text
-- [ ] Ensure layout scales reasonably for desktop window resize.
+- [x] Ensure layout scales reasonably for desktop window resize.
 
 Acceptance criteria:
 
 - All planned shell regions are visible and clearly separated.
 - Buttons/controls are wired to event dispatch (even if behavior is stubbed).
+
+Status:
+
+- Completed on 2026-03-18.
+- `Open`, `Reset`, and `Dismiss Error` are wired to ViewModel operations.
+- `Save As (PNG)` is intentionally placeholder/disabled until export flow milestone.
 
 ---
 
@@ -171,21 +186,26 @@ Acceptance criteria:
 
 ## 9. Minimal Test Setup for Milestone 0
 
-- [ ] Replace template test with at least one meaningful state-oriented test.
-- [ ] Add ViewModel test for a simple event transition:
-  - example: `ProcessingModeChanged` updates state.
-- [ ] Keep tests lightweight but aligned with MVVM/state-machine approach.
+- [x] Replace template test with at least one meaningful state-oriented test.
+- [x] Add ViewModel tests for state-machine transitions in the current load flow.
+- [x] Keep tests lightweight, one behavior per test, following AAA.
 
 Acceptance criteria:
 
 - Test suite includes at least one non-template test tied to new architecture.
+
+Status:
+
+- Completed on 2026-03-18 with `ImageViewerViewModelTest` aligned to async `requestLoadImage`.
+- Verification:
+  - `export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./gradlew :composeApp:jvmTest`
 
 ---
 
 ## 10. Final Verification Checklist
 
 - [ ] `./gradlew :composeApp:run` launches app shell successfully.
-- [ ] `./gradlew :composeApp:test` passes with updated tests.
+- [ ] `./gradlew :composeApp:jvmTest` passes with updated tests.
 - [ ] No template artifacts remain in source or UI.
 - [ ] No TODO blockers that prevent starting Milestone 1.
 

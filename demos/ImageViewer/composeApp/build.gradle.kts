@@ -26,6 +26,7 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation("org.jetbrains.compose.ui:ui-tooling:${libs.versions.composeMultiplatform.get()}")
             implementation(libs.kotlinx.coroutinesSwing)
         }
     }

@@ -1,3 +1,26 @@
 <resources>
     <string name="window_title">Image Viewer demo</string>
+    <string name="topbar_open">Open</string>
+    <string name="topbar_save_as_png">Save As (PNG)</string>
+    <string name="topbar_reset">Reset</string>
+
+    <string name="preview_original_title">Original</string>
+    <string name="preview_processed_title">Processed</string>
+    <string name="preview_placeholder">Preview placeholder</string>
+
+    <string name="controls_title">Controls</string>
+    <string name="controls_mode_placeholder">Processing mode selector (Step 7)</string>
+    <string name="controls_filters_placeholder">Filter controls placeholder</string>
+
+    <string name="footer_status_prefix">Status:</string>
+    <string name="footer_file_prefix">File:</string>
+    <string name="footer_error_prefix">Error:</string>
+    <string name="footer_dismiss">Dismiss</string>
+
+    <string name="status_no_image">No image loaded</string>
+    <string name="status_loading">Loading image...</string>
+    <string name="status_ready">Ready</string>
+    <string name="status_error">Error</string>
+
+    <string name="file_none">none</string>
 </resources>

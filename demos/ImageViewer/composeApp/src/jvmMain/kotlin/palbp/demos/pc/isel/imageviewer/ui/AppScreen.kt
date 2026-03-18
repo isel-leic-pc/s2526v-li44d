@@ -5,27 +5,46 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import palbp.demos.pc.isel.imageviewer.ui.components.Footer
+import palbp.demos.pc.isel.imageviewer.ui.components.MainContent
+import palbp.demos.pc.isel.imageviewer.ui.components.TopBar
+import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerScreenState
 
 @Composable
 @Preview
-fun AppScreen() {
+fun AppScreen(
+    state: ImageViewerScreenState = ImageViewerScreenState.NoImage,
+    onOpen: () -> Unit = {},
+    onSaveAs: () -> Unit = {},
+    onReset: () -> Unit = {},
+    onDismissError: () -> Unit = {},
+) {
     Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text("ImageViewer")
-            Text("Application shell ready for Milestone 1")
+            TopBar(
+                canOpen = state is ImageViewerScreenState.NoImage || state is ImageViewerScreenState.Ready,
+                canReset = state is ImageViewerScreenState.Ready || state is ImageViewerScreenState.Error,
+                onOpen = onOpen,
+                onSaveAs = onSaveAs,
+                onReset = onReset,
+            )
+
+            MainContent(state = state)
+
+            Footer(
+                state = state,
+                onDismissError = onDismissError,
+            )
         }
     }
 }
