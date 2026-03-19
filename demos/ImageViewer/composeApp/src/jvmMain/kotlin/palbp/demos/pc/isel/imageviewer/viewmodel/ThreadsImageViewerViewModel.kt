@@ -2,6 +2,7 @@ package palbp.demos.pc.isel.imageviewer.viewmodel
 
 import kotlin.concurrent.thread
 import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+import palbp.demos.pc.isel.imageviewer.processing.ImageLoader
 
 /**
  * Thread-based ViewModel implementation.

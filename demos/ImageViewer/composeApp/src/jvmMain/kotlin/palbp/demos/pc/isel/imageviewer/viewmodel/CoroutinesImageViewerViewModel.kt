@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+import palbp.demos.pc.isel.imageviewer.processing.ImageLoader
 
 /**
  * Coroutine-based ViewModel implementation.

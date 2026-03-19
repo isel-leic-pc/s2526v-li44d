@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
 import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+import palbp.demos.pc.isel.imageviewer.processing.ImageLoader
 
 /**
  * Shared state-machine implementation.

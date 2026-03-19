@@ -1,6 +1,7 @@
 package palbp.demos.pc.isel.imageviewer.viewmodel
 
 import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+import palbp.demos.pc.isel.imageviewer.processing.ImageLoader
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -277,9 +278,9 @@ private class ScriptedImageLoader(vararg scriptedActions: ScriptedAction) : Imag
         actions.put(action)
     }
 
-    override fun loadBlocking(imageName: String): LoadedImage {
+    override fun loadBlocking(imagePath: String): LoadedImage {
         val action = actions.poll(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS)
-            ?: error("No scripted loader action available for image '$imageName'")
+            ?: error("No scripted loader action available for image '$imagePath'")
         return action()
     }
 }

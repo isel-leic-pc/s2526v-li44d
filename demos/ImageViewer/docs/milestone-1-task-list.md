@@ -44,17 +44,29 @@ Status:
 
 ## 2. Implement Image Loading Service (JVM)
 
-- [ ] Add a JVM image-loading component that:
+- [x] Add a JVM image-loading component that:
   - validates supported extensions (`.png`, `.jpg`, `.jpeg`)
   - decodes image file content
   - returns loaded image + metadata (name/path/dimensions)
-- [ ] Normalize error mapping to user-facing messages.
-- [ ] Keep API shape compatible with both thread and coroutine ViewModels.
+- [x] Normalize error mapping to user-facing messages.
+- [x] Keep API shape compatible with both thread and coroutine ViewModels.
 
 Acceptance criteria:
 
 - Valid PNG/JPEG files load successfully.
 - Corrupt or unsupported files fail with controlled errors.
+
+Status:
+
+- Completed on 2026-03-19.
+- Added JVM loader component:
+  - `processing/LocalFileImageLoader.kt`
+  - `processing/ImageLoader.kt` (abstraction)
+- Error mapping currently covers:
+  - unsupported extension
+  - file-not-found/read failures
+  - decode failures
+- VM integration is intentionally deferred to Task 4.
 
 ---
 
