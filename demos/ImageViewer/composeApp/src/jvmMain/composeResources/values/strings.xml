@@ -4,12 +4,16 @@
     <string name="topbar_save_as_png">Save As (PNG)</string>
     <string name="topbar_reset">Reset</string>
 
-    <string name="preview_original_title">Original</string>
-    <string name="preview_processed_title">Processed</string>
+    <string name="preview_title">Image Preview</string>
     <string name="preview_placeholder">Preview placeholder</string>
+    <string name="preview_show_original">Original</string>
+    <string name="preview_show_processed">Processed</string>
+    <string name="preview_toggle_hint">Toggle controls will be enabled in a later step</string>
 
     <string name="controls_title">Controls</string>
-    <string name="controls_mode_placeholder">Processing mode selector (Step 7)</string>
+    <string name="controls_processing_mode_label">Processing mode</string>
+    <string name="controls_mode_threads">Threads</string>
+    <string name="controls_mode_coroutines">Coroutines</string>
     <string name="controls_filters_placeholder">Filter controls placeholder</string>
 
     <string name="footer_status_prefix">Status:</string>

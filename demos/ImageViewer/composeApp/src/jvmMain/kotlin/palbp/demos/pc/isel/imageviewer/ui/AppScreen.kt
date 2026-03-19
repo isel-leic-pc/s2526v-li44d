@@ -13,15 +13,18 @@ import palbp.demos.pc.isel.imageviewer.ui.components.Footer
 import palbp.demos.pc.isel.imageviewer.ui.components.MainContent
 import palbp.demos.pc.isel.imageviewer.ui.components.TopBar
 import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerScreenState
+import palbp.demos.pc.isel.imageviewer.viewmodel.ProcessingMode
 
 @Composable
 @Preview
 fun AppScreen(
     state: ImageViewerScreenState = ImageViewerScreenState.NoImage,
+    selectedProcessingMode: ProcessingMode = ProcessingMode.Threads,
     onOpen: () -> Unit = {},
     onSaveAs: () -> Unit = {},
     onReset: () -> Unit = {},
     onDismissError: () -> Unit = {},
+    onSelectProcessingMode: (ProcessingMode) -> Unit = {},
 ) {
     Scaffold { innerPadding ->
         Column(
@@ -39,7 +42,11 @@ fun AppScreen(
                 onReset = onReset,
             )
 
-            MainContent(state = state)
+            MainContent(
+                state = state,
+                selectedProcessingMode = selectedProcessingMode,
+                onSelectProcessingMode = onSelectProcessingMode,
+            )
 
             Footer(
                 state = state,

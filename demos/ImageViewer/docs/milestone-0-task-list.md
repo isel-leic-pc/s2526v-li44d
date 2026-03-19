@@ -111,10 +111,11 @@ Status:
 
 ## 5. Introduce ViewModel Stub and Wiring
 
-- [x] Create `ImageViewerViewModel` with exposed screen state:
+- [x] Create `ImageViewerViewModel` contract with exposed screen state:
   - `var state by mutableStateOf(...)`
 - [x] Expose operation-based transition methods (`requestLoadImage`, `dismissError`, `reset`).
 - [x] Implement asynchronous load transition path using dedicated threads.
+- [x] Provide distinct per-mode ViewModel implementations with same public API/state machine.
 - [x] Keep non-load concerns for later milestones.
 
 Acceptance criteria:
@@ -124,7 +125,10 @@ Acceptance criteria:
 
 Status:
 
-- In progress (updated on 2026-03-18): loading state machine and async load implemented.
+- Completed on 2026-03-19 with:
+  - shared `ImageViewerViewModel` contract
+  - `ThreadsImageViewerViewModel`
+  - `CoroutinesImageViewerViewModel`
 - Pending in later milestones: filter/save transitions and cancellation model.
 
 ---
@@ -158,29 +162,41 @@ Status:
 
 ## 7. Processing Mode Selector Placeholder
 
-- [ ] Add UI control for selecting `Threads` or `Coroutines`.
-- [ ] Bind selected value to hoisted state.
-- [ ] Update state through ViewModel event handling.
+- [x] Add UI control for selecting `Threads` or `Coroutines`.
+- [x] Bind selected value to hoisted state.
+- [x] Update state through ViewModel event handling.
 
 Acceptance criteria:
 
 - User can switch mode in UI and selection persists in state.
 - No pipeline implementation required yet.
 
+Status:
+
+- Completed on 2026-03-19.
+- `ProcessingMode` selection is hoisted at app level.
+- Main screen controls panel is wired to switch between mode-specific ViewModel instances.
+
 ---
 
 ## 8. Placeholder Error/Status UX
 
-- [ ] Add non-blocking status presentation area for:
+- [x] Add non-blocking status presentation area for:
   - `Idle`
   - `Rendering` (placeholder only)
   - `Error(message)` (placeholder-trigger path optional)
-- [ ] Ensure message area does not break layout when empty.
+- [x] Ensure message area does not break layout when empty.
 
 Acceptance criteria:
 
 - Status rendering path exists and is driven by state.
 - Future milestones can hook real errors without redesigning UI.
+
+Status:
+
+- Completed on 2026-03-19.
+- Footer shows status + file metadata for all states and error details when present.
+- Error UX is non-blocking and supports dismiss action.
 
 ---
 
@@ -204,14 +220,20 @@ Status:
 
 ## 10. Final Verification Checklist
 
-- [ ] `./gradlew :composeApp:run` launches app shell successfully.
-- [ ] `./gradlew :composeApp:jvmTest` passes with updated tests.
-- [ ] No template artifacts remain in source or UI.
-- [ ] No TODO blockers that prevent starting Milestone 1.
+- [x] `./gradlew :composeApp:run` launches app shell successfully.
+- [x] `./gradlew :composeApp:jvmTest` passes with updated tests.
+- [x] No template artifacts remain in source or UI.
+- [x] No TODO blockers that prevent starting Milestone 1.
 
 Exit condition for Milestone 0:
 
 - Application starts with a functional shell, state-hoisted MVVM wiring is in place, and codebase is ready for image-loading implementation.
+
+Status:
+
+- Completed on 2026-03-19.
+- Launch verification: `:composeApp:run` started successfully (task interrupted manually after startup).
+- Test verification: `:composeApp:jvmTest` passed.
 
 ---
 

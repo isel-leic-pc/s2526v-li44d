@@ -18,7 +18,7 @@ class ImageViewerViewModelTest {
     @Test
     fun `initial state is NoImage`() {
         // Arrange
-        val vm = ImageViewerViewModel()
+        val vm = ThreadsImageViewerViewModel()
 
         // Act
         val state = vm.state
@@ -40,7 +40,7 @@ class ImageViewerViewModelTest {
                 photoImage
             },
         )
-        val vm = ImageViewerViewModel(imageLoader = loader)
+        val vm = ThreadsImageViewerViewModel(imageLoader = loader)
 
         // Act
         vm.requestLoadImage(photoImage)
@@ -59,7 +59,7 @@ class ImageViewerViewModelTest {
     fun `requestLoadImage success transitions to Ready`() {
         // Arrange
         val photoImage = "photo.png"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader({ photoImage }),
         )
 
@@ -77,7 +77,7 @@ class ImageViewerViewModelTest {
         val afterImage = "after.png"
         val started = CountDownLatch(1)
         val release = CountDownLatch(1)
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
                 { beforeImage },
                 {
@@ -111,7 +111,7 @@ class ImageViewerViewModelTest {
         val beforeImage = "before.png"
         val newImage = "new.png"
         val loadFailureMessage = "read failed"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
                 { beforeImage },
                 { error(loadFailureMessage) },
@@ -139,7 +139,7 @@ class ImageViewerViewModelTest {
         val beforeImage = "before.png"
         val nextImage = "next.png"
         val genericFailureMessage = "boom"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
                 { beforeImage },
                 { error(genericFailureMessage) },
@@ -168,7 +168,7 @@ class ImageViewerViewModelTest {
         // Arrange
         val firstImage = "first.png"
         val genericFailureMessage = "boom"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader({ error(genericFailureMessage) }),
         )
         vm.requestLoadImage(firstImage)
@@ -191,7 +191,7 @@ class ImageViewerViewModelTest {
     fun `reset from Ready transitions to NoImage`() {
         // Arrange
         val sampleImage = "img.png"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader({ sampleImage }),
         )
         vm.requestLoadImage(sampleImage)
@@ -209,7 +209,7 @@ class ImageViewerViewModelTest {
         // Arrange
         val sampleImage = "img.png"
         val genericFailureMessage = "boom"
-        val vm = ImageViewerViewModel(
+        val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader({ error(genericFailureMessage) }),
         )
         vm.requestLoadImage(sampleImage)
@@ -225,7 +225,7 @@ class ImageViewerViewModelTest {
     @Test
     fun `reset from NoImage throws IllegalStateException`() {
         // Arrange
-        val vm = ImageViewerViewModel()
+        val vm = ThreadsImageViewerViewModel()
 
         // Act + Assert
         assertFailsWith<IllegalStateException> {

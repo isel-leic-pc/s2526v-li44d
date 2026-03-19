@@ -1,0 +1,92 @@
+package palbp.demos.pc.isel.imageviewer.viewmodel
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
+
+/**
+ * Shared state-machine implementation.
+ *
+ * Implementations differ only in how they execute asynchronous loading.
+ */
+abstract class BaseImageViewerViewModel(
+    private val imageLoader: ImageLoader,
+) : ImageViewerViewModel {
+
+    private var mutableState by mutableStateOf<ImageViewerScreenState>(ImageViewerScreenState.NoImage)
+
+    final override val state: ImageViewerScreenState
+        get() = mutableState
+
+    final override fun requestLoadImage(imageName: String) {
+        val fallbackState = when (val currentState = state) {
+            ImageViewerScreenState.NoImage -> FallbackState.NoImage
+            is ImageViewerScreenState.Ready -> FallbackState.Ready(currentState.imageName)
+            else -> invalidTransition("requestLoadImage")
+        }
+
+        mutableState = ImageViewerScreenState.LoadingImage(fallbackState = fallbackState)
+        executeLoad(
+            imageName = imageName,
+            onSuccess = { loadedImageName ->
+                Snapshot.withMutableSnapshot {
+                    onLoadImageSuccess(loadedImageName)
+                }
+            },
+            onFailure = { message ->
+                Snapshot.withMutableSnapshot {
+                    onLoadImageError(message = message, fallbackState = fallbackState)
+                }
+            },
+        )
+    }
+
+    final override fun reset() {
+        mutableState = when (state) {
+            is ImageViewerScreenState.Ready,
+            is ImageViewerScreenState.Error,
+            -> ImageViewerScreenState.NoImage
+            else -> invalidTransition("reset")
+        }
+    }
+
+    final override fun dismissError() {
+        mutableState = when (val currentState = state) {
+            is ImageViewerScreenState.Error -> when (val fallback = currentState.fallbackState) {
+                FallbackState.NoImage -> ImageViewerScreenState.NoImage
+                is FallbackState.Ready -> ImageViewerScreenState.Ready(imageName = fallback.imageName)
+            }
+
+            else -> invalidTransition("dismissError")
+        }
+    }
+
+    protected abstract fun executeLoad(
+        imageName: String,
+        onSuccess: (String) -> Unit,
+        onFailure: (String) -> Unit,
+    )
+
+    private fun onLoadImageSuccess(imageName: String) {
+        mutableState = when (state) {
+            is ImageViewerScreenState.LoadingImage -> ImageViewerScreenState.Ready(imageName = imageName)
+            else -> invalidTransition("onLoadImageSuccess")
+        }
+    }
+
+    private fun onLoadImageError(message: String, fallbackState: FallbackState) {
+        mutableState = when (state) {
+            is ImageViewerScreenState.LoadingImage -> ImageViewerScreenState.Error(
+                message = message,
+                fallbackState = fallbackState,
+            )
+
+            else -> invalidTransition("onLoadImageError")
+        }
+    }
+
+    private fun invalidTransition(operation: String): Nothing {
+        error("Invalid transition: $operation from state $state")
+    }
+}
