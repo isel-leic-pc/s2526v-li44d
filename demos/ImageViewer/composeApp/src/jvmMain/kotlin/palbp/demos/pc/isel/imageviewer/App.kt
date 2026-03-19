@@ -16,12 +16,11 @@ import palbp.demos.pc.isel.imageviewer.viewmodel.ThreadsImageViewerViewModel
 fun App() {
 
     var selectedProcessingMode by remember { mutableStateOf(ProcessingMode.Threads) }
-    val threadsViewModel = remember { ThreadsImageViewerViewModel() }
-    val coroutinesViewModel = remember { CoroutinesImageViewerViewModel() }
-
-    val activeViewModel: ImageViewerViewModel = when (selectedProcessingMode) {
-        ProcessingMode.Threads -> threadsViewModel
-        ProcessingMode.Coroutines -> coroutinesViewModel
+    val activeViewModel: ImageViewerViewModel = remember(selectedProcessingMode) {
+        when (selectedProcessingMode) {
+            ProcessingMode.Threads -> ThreadsImageViewerViewModel()
+            ProcessingMode.Coroutines -> CoroutinesImageViewerViewModel()
+        }
     }
 
     MaterialTheme {
