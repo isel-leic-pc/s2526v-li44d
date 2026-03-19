@@ -72,44 +72,65 @@ Status:
 
 ## 3. Integrate Desktop File Chooser with `Open`
 
-- [ ] Replace placeholder `onOpen` behavior in `App.kt` with real file chooser invocation.
-- [ ] Apply file filters for PNG/JPEG.
-- [ ] Handle cancel action as no-op (no state mutation).
-- [ ] Dispatch selected file to active ViewModel load operation.
+- [x] Replace placeholder `onOpen` behavior in `App.kt` with real file chooser invocation.
+- [x] Apply file filters for PNG/JPEG.
+- [x] Handle cancel action as no-op (no state mutation).
+- [x] Dispatch selected file to active ViewModel load operation.
 
 Acceptance criteria:
 
 - User can pick an image from disk through `Open`.
 - Canceling picker does not alter current state.
 
+Status:
+
+- Completed on 2026-03-19.
+- `App.kt` now opens a desktop file dialog (`FileDialog`) on `Open`.
+- Selected file path is dispatched to `requestLoadImage(...)`.
+- File chooser cancel path exits without state changes.
+
 ---
 
 ## 4. Update ViewModel Load Path to Real Inputs
 
-- [ ] Change `requestLoadImage(...)` contract from fake image name to file-based input.
-- [ ] Keep transition rules explicit and testable:
+- [x] Change `requestLoadImage(...)` contract from fake image name to file-based input.
+- [x] Keep transition rules explicit and testable:
   - `NoImage/Ready -> LoadingImage -> Ready|Error`
   - `dismissError` returns to fallback
   - `reset` returns to `NoImage`
-- [ ] Ensure both `ThreadsImageViewerViewModel` and `CoroutinesImageViewerViewModel` use the same load semantics.
+- [x] Ensure both `ThreadsImageViewerViewModel` and `CoroutinesImageViewerViewModel` use the same load semantics.
 
 Acceptance criteria:
 
 - Both implementations exhibit equivalent state-machine behavior for load success/failure.
 - No regression in existing transition invariants.
 
+Status:
+
+- Completed on 2026-03-19.
+- `requestLoadImage(...)` now takes file-path semantics.
+- Both `ThreadsImageViewerViewModel` and `CoroutinesImageViewerViewModel` now default to `LocalFileImageLoader()`.
+- Shared transition semantics remain centralized in `BaseImageViewerViewModel`.
+
 ---
 
 ## 5. Render Real Image in UI
 
-- [ ] Update preview area to display loaded image instead of placeholder text when `Ready`.
-- [ ] Keep placeholder content for `NoImage`/`LoadingImage`.
-- [ ] Ensure image display scales safely in preview container (no layout break on large images).
+- [x] Update preview area to display loaded image instead of placeholder text when `Ready`.
+- [x] Keep placeholder content for `NoImage`/`LoadingImage`.
+- [x] Ensure image display scales safely in preview container (no layout break on large images).
 
 Acceptance criteria:
 
 - Loaded image is visible in preview panel.
 - UI remains responsive and stable while loading.
+
+Status:
+
+- Completed on 2026-03-19.
+- Preview panel now renders `state.loadedImage.imageBitmap` when in `Ready`.
+- Non-ready states keep placeholder text rendering.
+- Image scaling uses `ContentScale.Fit` inside bounded preview container.
 
 ---
 

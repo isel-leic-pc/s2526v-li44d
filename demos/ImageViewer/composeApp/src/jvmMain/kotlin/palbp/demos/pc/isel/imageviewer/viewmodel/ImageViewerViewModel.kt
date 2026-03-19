@@ -13,17 +13,17 @@ import palbp.demos.pc.isel.imageviewer.processing.ImageLoader
 interface ImageViewerViewModel {
     val state: ImageViewerScreenState
 
-    fun requestLoadImage(imageName: String)
+    fun requestLoadImage(imagePath: String)
 
     fun reset()
 
     fun dismissError()
 }
 
-fun createPlaceholderLoadedImage(imageName: String): LoadedImage =
+fun createPlaceholderLoadedImage(fileName: String): LoadedImage =
     LoadedImage.parseOrThrow(
         metadata = ImageMetadata.parseOrThrow(
-            fileName = imageName,
+            fileName = fileName,
             width = 1,
             height = 1,
         ),

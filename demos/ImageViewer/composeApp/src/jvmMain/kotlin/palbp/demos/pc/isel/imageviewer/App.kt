@@ -6,6 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import java.awt.FileDialog
+import java.awt.Frame
+import java.io.File
 import palbp.demos.pc.isel.imageviewer.ui.AppScreen
 import palbp.demos.pc.isel.imageviewer.viewmodel.CoroutinesImageViewerViewModel
 import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerViewModel
@@ -27,11 +30,29 @@ fun App() {
         AppScreen(
             state = activeViewModel.state,
             selectedProcessingMode = selectedProcessingMode,
-            onOpen = { activeViewModel.requestLoadImage("sample-image.png") },
+            onOpen = {
+                chooseImageFilePath()?.let { selectedPath ->
+                    activeViewModel.requestLoadImage(selectedPath)
+                }
+            },
             onSaveAs = { /* placeholder for Milestone 4 */ },
             onReset = { activeViewModel.reset() },
             onDismissError = { activeViewModel.dismissError() },
             onSelectProcessingMode = { mode -> selectedProcessingMode = mode },
         )
     }
+}
+
+private fun chooseImageFilePath(): String? {
+    val dialog = FileDialog(null as Frame?, "Open Image", FileDialog.LOAD).apply {
+        filenameFilter = java.io.FilenameFilter { _, name ->
+            val extension = name.substringAfterLast('.', "").lowercase()
+            extension in setOf("png", "jpg", "jpeg")
+        }
+        isVisible = true
+    }
+
+    val selectedFile = dialog.file ?: return null
+    val selectedDirectory = dialog.directory ?: return null
+    return File(selectedDirectory, selectedFile).absolutePath
 }

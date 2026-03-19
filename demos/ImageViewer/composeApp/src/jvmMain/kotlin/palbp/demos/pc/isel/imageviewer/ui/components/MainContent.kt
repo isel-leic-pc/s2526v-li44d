@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +36,10 @@ import imageviewer.composeapp.generated.resources.preview_show_processed
 import imageviewer.composeapp.generated.resources.preview_title
 import imageviewer.composeapp.generated.resources.preview_toggle_hint
 import org.jetbrains.compose.resources.stringResource
-import palbp.demos.pc.isel.imageviewer.viewmodel.createPlaceholderLoadedImage
+import androidx.compose.foundation.Image
 import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerScreenState
 import palbp.demos.pc.isel.imageviewer.viewmodel.ProcessingMode
+import palbp.demos.pc.isel.imageviewer.viewmodel.createPlaceholderLoadedImage
 
 @Composable
 fun ColumnScope.MainContent(
@@ -67,7 +69,7 @@ fun ColumnScope.MainContent(
             }
             PreviewCard(
                 title = stringResource(Res.string.preview_title),
-                text = "${currentImageLabel(state)}\n${stringResource(Res.string.preview_placeholder)}",
+                state = state,
                 modifier = Modifier.weight(1f),
             )
             Text(
@@ -115,7 +117,7 @@ fun ColumnScope.MainContent(
 @Composable
 private fun PreviewCard(
     title: String,
-    text: String,
+    state: ImageViewerScreenState,
     modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
@@ -132,7 +134,21 @@ private fun PreviewCard(
                     .border(1.dp, MaterialTheme.colorScheme.outline),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(text)
+                when (state) {
+                    is ImageViewerScreenState.Ready -> Image(
+                        bitmap = state.loadedImage.imageBitmap,
+                        contentDescription = state.loadedImage.metadata.fileName,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit,
+                    )
+
+                    ImageViewerScreenState.NoImage,
+                    is ImageViewerScreenState.LoadingImage,
+                    is ImageViewerScreenState.Error,
+                    -> Text(
+                        "${currentImageLabel(state)}\n${stringResource(Res.string.preview_placeholder)}",
+                    )
+                }
             }
         }
     }

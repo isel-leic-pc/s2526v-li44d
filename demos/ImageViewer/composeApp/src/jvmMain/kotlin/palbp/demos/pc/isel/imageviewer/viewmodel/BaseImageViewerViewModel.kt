@@ -21,7 +21,7 @@ abstract class BaseImageViewerViewModel(
     final override val state: ImageViewerScreenState
         get() = mutableState
 
-    final override fun requestLoadImage(imageName: String) {
+    final override fun requestLoadImage(imagePath: String) {
         val fallbackState = when (val currentState = state) {
             ImageViewerScreenState.NoImage -> FallbackState.NoImage
             is ImageViewerScreenState.Ready -> FallbackState.Ready(currentState.loadedImage)
@@ -30,10 +30,10 @@ abstract class BaseImageViewerViewModel(
 
         mutableState = ImageViewerScreenState.LoadingImage(fallbackState = fallbackState)
         executeLoad(
-            imageName = imageName,
-            onSuccess = { loadedImageName ->
+            imagePath = imagePath,
+            onSuccess = { loadedImage ->
                 Snapshot.withMutableSnapshot {
-                    onLoadImageSuccess(loadedImageName)
+                    onLoadImageSuccess(loadedImage)
                 }
             },
             onFailure = { message ->
@@ -65,7 +65,7 @@ abstract class BaseImageViewerViewModel(
     }
 
     protected abstract fun executeLoad(
-        imageName: String,
+        imagePath: String,
         onSuccess: (LoadedImage) -> Unit,
         onFailure: (String) -> Unit,
     )
