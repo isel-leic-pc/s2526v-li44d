@@ -1,5 +1,9 @@
 package palbp.demos.pc.isel.imageviewer.viewmodel
 
+import androidx.compose.ui.graphics.ImageBitmap
+import palbp.demos.pc.isel.imageviewer.domain.ImageMetadata
+import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+
 /**
  * Public contract shared by all processing-mode-specific ViewModel implementations.
  *
@@ -20,5 +24,15 @@ interface ImageViewerViewModel {
  */
 fun interface ImageLoader {
     @Throws(Exception::class)
-    fun loadBlocking(imageName: String): String
+    fun loadBlocking(imageName: String): LoadedImage
 }
+
+fun createPlaceholderLoadedImage(imageName: String): LoadedImage =
+    LoadedImage(
+        metadata = ImageMetadata(
+            fileName = imageName,
+            width = 1,
+            height = 1,
+        ),
+        imageBitmap = ImageBitmap(width = 1, height = 1),
+    )

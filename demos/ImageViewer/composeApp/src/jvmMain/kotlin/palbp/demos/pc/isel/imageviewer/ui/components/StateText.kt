@@ -22,14 +22,14 @@ fun statusText(state: ImageViewerScreenState): String = when (state) {
 @Composable
 fun currentImageLabel(state: ImageViewerScreenState): String = when (state) {
     ImageViewerScreenState.NoImage -> stringResource(Res.string.file_none)
-    is ImageViewerScreenState.Ready -> state.imageName
+    is ImageViewerScreenState.Ready -> state.loadedImage.metadata.fileName
     is ImageViewerScreenState.LoadingImage -> when (val fb = state.fallbackState) {
         FallbackState.NoImage -> stringResource(Res.string.file_none)
-        is FallbackState.Ready -> fb.imageName
+        is FallbackState.Ready -> fb.loadedImage.metadata.fileName
     }
 
     is ImageViewerScreenState.Error -> when (val fb = state.fallbackState) {
         FallbackState.NoImage -> stringResource(Res.string.file_none)
-        is FallbackState.Ready -> fb.imageName
+        is FallbackState.Ready -> fb.loadedImage.metadata.fileName
     }
 }

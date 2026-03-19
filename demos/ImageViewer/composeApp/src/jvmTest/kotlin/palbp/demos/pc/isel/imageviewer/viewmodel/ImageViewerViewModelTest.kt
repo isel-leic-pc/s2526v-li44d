@@ -1,5 +1,6 @@
 package palbp.demos.pc.isel.imageviewer.viewmodel
 
+import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -11,7 +12,7 @@ import kotlin.test.assertTrue
 private const val DEFAULT_TIMEOUT_MS = 1_000L
 private const val POLL_INTERVAL_MS = 10L
 
-private typealias ScriptedAction = () -> String
+private typealias ScriptedAction = () -> LoadedImage
 
 class ImageViewerViewModelTest {
 
@@ -31,13 +32,14 @@ class ImageViewerViewModelTest {
     fun `requestLoadImage from NoImage enters LoadingImage with NoImage fallback`() {
         // Arrange
         val photoImage = "photo.png"
+        val loadedPhoto = sampleLoadedImage(photoImage)
         val started = CountDownLatch(1)
         val release = CountDownLatch(1)
         val loader = ScriptedImageLoader(
             {
                 started.countDown()
                 assertTrue(release.await(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS))
-                photoImage
+                loadedPhoto
             },
         )
         val vm = ThreadsImageViewerViewModel(imageLoader = loader)
@@ -52,22 +54,23 @@ class ImageViewerViewModelTest {
             expected = ImageViewerScreenState.LoadingImage(fallbackState = FallbackState.NoImage),
         )
         release.countDown()
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(photoImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(loadedPhoto))
     }
 
     @Test
     fun `requestLoadImage success transitions to Ready`() {
         // Arrange
         val photoImage = "photo.png"
+        val loadedPhoto = sampleLoadedImage(photoImage)
         val vm = ThreadsImageViewerViewModel(
-            imageLoader = ScriptedImageLoader({ photoImage }),
+            imageLoader = ScriptedImageLoader({ loadedPhoto }),
         )
 
         // Act
         vm.requestLoadImage(photoImage)
 
         // Assert
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(photoImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(loadedPhoto))
     }
 
     @Test
@@ -75,20 +78,22 @@ class ImageViewerViewModelTest {
         // Arrange
         val beforeImage = "before.png"
         val afterImage = "after.png"
+        val beforeLoaded = sampleLoadedImage(beforeImage)
+        val afterLoaded = sampleLoadedImage(afterImage)
         val started = CountDownLatch(1)
         val release = CountDownLatch(1)
         val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
-                { beforeImage },
+                { beforeLoaded },
                 {
                     started.countDown()
                     assertTrue(release.await(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS))
-                    afterImage
+                    afterLoaded
                 },
             ),
         )
         vm.requestLoadImage(beforeImage)
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeLoaded))
 
         // Act
         vm.requestLoadImage(afterImage)
@@ -98,11 +103,11 @@ class ImageViewerViewModelTest {
         awaitStateEquals(
             vm = vm,
             expected = ImageViewerScreenState.LoadingImage(
-                fallbackState = FallbackState.Ready(beforeImage),
+                fallbackState = FallbackState.Ready(beforeLoaded),
             ),
         )
         release.countDown()
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(afterImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(afterLoaded))
     }
 
     @Test
@@ -111,14 +116,15 @@ class ImageViewerViewModelTest {
         val beforeImage = "before.png"
         val newImage = "new.png"
         val loadFailureMessage = "read failed"
+        val beforeLoaded = sampleLoadedImage(beforeImage)
         val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
-                { beforeImage },
+                { beforeLoaded },
                 { error(loadFailureMessage) },
             ),
         )
         vm.requestLoadImage(beforeImage)
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeLoaded))
 
         // Act
         vm.requestLoadImage(newImage)
@@ -128,7 +134,7 @@ class ImageViewerViewModelTest {
             vm = vm,
             expected = ImageViewerScreenState.Error(
                 message = loadFailureMessage,
-                fallbackState = FallbackState.Ready(beforeImage),
+                fallbackState = FallbackState.Ready(beforeLoaded),
             ),
         )
     }
@@ -139,20 +145,21 @@ class ImageViewerViewModelTest {
         val beforeImage = "before.png"
         val nextImage = "next.png"
         val genericFailureMessage = "boom"
+        val beforeLoaded = sampleLoadedImage(beforeImage)
         val vm = ThreadsImageViewerViewModel(
             imageLoader = ScriptedImageLoader(
-                { beforeImage },
+                { beforeLoaded },
                 { error(genericFailureMessage) },
             ),
         )
         vm.requestLoadImage(beforeImage)
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(beforeLoaded))
         vm.requestLoadImage(nextImage)
         awaitStateEquals(
             vm = vm,
             expected = ImageViewerScreenState.Error(
                 message = genericFailureMessage,
-                fallbackState = FallbackState.Ready(beforeImage),
+                fallbackState = FallbackState.Ready(beforeLoaded),
             ),
         )
 
@@ -160,7 +167,7 @@ class ImageViewerViewModelTest {
         vm.dismissError()
 
         // Assert
-        assertEquals(ImageViewerScreenState.Ready(beforeImage), vm.state)
+        assertEquals(ImageViewerScreenState.Ready(beforeLoaded), vm.state)
     }
 
     @Test
@@ -191,11 +198,12 @@ class ImageViewerViewModelTest {
     fun `reset from Ready transitions to NoImage`() {
         // Arrange
         val sampleImage = "img.png"
+        val sampleLoaded = sampleLoadedImage(sampleImage)
         val vm = ThreadsImageViewerViewModel(
-            imageLoader = ScriptedImageLoader({ sampleImage }),
+            imageLoader = ScriptedImageLoader({ sampleLoaded }),
         )
         vm.requestLoadImage(sampleImage)
-        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(sampleImage))
+        awaitStateEquals(vm = vm, expected = ImageViewerScreenState.Ready(sampleLoaded))
 
         // Act
         vm.reset()
@@ -269,9 +277,11 @@ private class ScriptedImageLoader(vararg scriptedActions: ScriptedAction) : Imag
         actions.put(action)
     }
 
-    override fun loadBlocking(imageName: String): String {
+    override fun loadBlocking(imageName: String): LoadedImage {
         val action = actions.poll(DEFAULT_TIMEOUT_MS, TimeUnit.MILLISECONDS)
             ?: error("No scripted loader action available for image '$imageName'")
         return action()
     }
 }
+
+private fun sampleLoadedImage(fileName: String): LoadedImage = createPlaceholderLoadedImage(fileName)

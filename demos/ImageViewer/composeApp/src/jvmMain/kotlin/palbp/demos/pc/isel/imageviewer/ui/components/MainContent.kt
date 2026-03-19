@@ -35,6 +35,7 @@ import imageviewer.composeapp.generated.resources.preview_show_processed
 import imageviewer.composeapp.generated.resources.preview_title
 import imageviewer.composeapp.generated.resources.preview_toggle_hint
 import org.jetbrains.compose.resources.stringResource
+import palbp.demos.pc.isel.imageviewer.viewmodel.createPlaceholderLoadedImage
 import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerScreenState
 import palbp.demos.pc.isel.imageviewer.viewmodel.ProcessingMode
 
@@ -147,7 +148,7 @@ private fun MainContentPreview() {
             .padding(16.dp),
     ) {
         MainContent(
-            state = ImageViewerScreenState.Ready("sample-image.png"),
+            state = ImageViewerScreenState.Ready(createPlaceholderLoadedImage("sample-image.png")),
             selectedProcessingMode = ProcessingMode.Threads,
             onSelectProcessingMode = {},
         )

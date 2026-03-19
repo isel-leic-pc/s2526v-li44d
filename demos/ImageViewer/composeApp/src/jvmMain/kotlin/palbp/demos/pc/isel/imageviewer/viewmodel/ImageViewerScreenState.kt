@@ -1,5 +1,7 @@
 package palbp.demos.pc.isel.imageviewer.viewmodel
 
+import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
+
 /**
  * Screen state machine for the current ImageViewer loading flow.
  */
@@ -18,7 +20,7 @@ sealed interface ImageViewerScreenState {
 
     /** Image is available for display. */
     data class Ready(
-        val imageName: String,
+        val loadedImage: LoadedImage,
     ) : ImageViewerScreenState
 
     /**
@@ -39,6 +41,6 @@ sealed interface FallbackState {
     data object NoImage : FallbackState
 
     data class Ready(
-        val imageName: String,
+        val loadedImage: LoadedImage,
     ) : FallbackState
 }

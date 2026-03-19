@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
+import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
 
 /**
  * Shared state-machine implementation.
@@ -22,7 +23,7 @@ abstract class BaseImageViewerViewModel(
     final override fun requestLoadImage(imageName: String) {
         val fallbackState = when (val currentState = state) {
             ImageViewerScreenState.NoImage -> FallbackState.NoImage
-            is ImageViewerScreenState.Ready -> FallbackState.Ready(currentState.imageName)
+            is ImageViewerScreenState.Ready -> FallbackState.Ready(currentState.loadedImage)
             else -> invalidTransition("requestLoadImage")
         }
 
@@ -55,7 +56,7 @@ abstract class BaseImageViewerViewModel(
         mutableState = when (val currentState = state) {
             is ImageViewerScreenState.Error -> when (val fallback = currentState.fallbackState) {
                 FallbackState.NoImage -> ImageViewerScreenState.NoImage
-                is FallbackState.Ready -> ImageViewerScreenState.Ready(imageName = fallback.imageName)
+                is FallbackState.Ready -> ImageViewerScreenState.Ready(loadedImage = fallback.loadedImage)
             }
 
             else -> invalidTransition("dismissError")
@@ -64,13 +65,13 @@ abstract class BaseImageViewerViewModel(
 
     protected abstract fun executeLoad(
         imageName: String,
-        onSuccess: (String) -> Unit,
+        onSuccess: (LoadedImage) -> Unit,
         onFailure: (String) -> Unit,
     )
 
-    private fun onLoadImageSuccess(imageName: String) {
+    private fun onLoadImageSuccess(loadedImage: LoadedImage) {
         mutableState = when (state) {
-            is ImageViewerScreenState.LoadingImage -> ImageViewerScreenState.Ready(imageName = imageName)
+            is ImageViewerScreenState.LoadingImage -> ImageViewerScreenState.Ready(loadedImage = loadedImage)
             else -> invalidTransition("onLoadImageSuccess")
         }
     }
