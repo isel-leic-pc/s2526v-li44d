@@ -11,8 +11,6 @@ import org.jetbrains.skia.Image
 import palbp.demos.pc.isel.imageviewer.domain.ImageMetadata
 import palbp.demos.pc.isel.imageviewer.domain.LoadedImage
 
-private val SUPPORTED_IMAGE_EXTENSIONS = setOf("png", "jpg", "jpeg")
-
 /**
  * Loads PNG/JPEG images from the local file system into Compose-compatible image data.
  */
@@ -65,7 +63,7 @@ class LocalFileImageLoader : ImageLoader {
     @Throws(ImageLoadException::class)
     private fun ensureSupportedExtension(path: Path) {
         val extension = path.extension.lowercase()
-        if (extension in SUPPORTED_IMAGE_EXTENSIONS) return
+        if (SupportedImageFileTypes.isSupportedExtension(extension)) return
         throw ImageLoadException(
             kind = ImageLoadErrorKind.UNSUPPORTED_FORMAT,
             fileName = path.name,

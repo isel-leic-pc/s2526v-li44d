@@ -241,6 +241,77 @@ class ImageViewerViewModelTest {
             vm.reset()
         }
     }
+
+    @Test
+    fun `threads and coroutines have equivalent success state for same input path`() {
+        // Arrange
+        val imagePath = "/tmp/sample.png"
+        val threadsLoaded = sampleLoadedImage("sample.png")
+        val coroutinesLoaded = sampleLoadedImage("sample.png")
+        val threadsVm = ThreadsImageViewerViewModel(
+            imageLoader = ScriptedImageLoader({ threadsLoaded }),
+        )
+        val coroutinesVm = CoroutinesImageViewerViewModel(
+            imageLoader = ScriptedImageLoader({ coroutinesLoaded }),
+        )
+
+        // Act
+        threadsVm.requestLoadImage(imagePath)
+        coroutinesVm.requestLoadImage(imagePath)
+
+        // Assert
+        awaitStateEquals(vm = threadsVm, expected = ImageViewerScreenState.Ready(threadsLoaded))
+        awaitStateEquals(vm = coroutinesVm, expected = ImageViewerScreenState.Ready(coroutinesLoaded))
+    }
+
+    @Test
+    fun `threads and coroutines have equivalent error fallback behavior`() {
+        // Arrange
+        val beforePath = "/tmp/before.png"
+        val afterPath = "/tmp/after.png"
+        val beforeName = "before.png"
+        val failureMessage = "decode failed"
+        val threadsBeforeLoaded = sampleLoadedImage(beforeName)
+        val coroutinesBeforeLoaded = sampleLoadedImage(beforeName)
+
+        val threadsVm = ThreadsImageViewerViewModel(
+            imageLoader = ScriptedImageLoader(
+                { threadsBeforeLoaded },
+                { error(failureMessage) },
+            ),
+        )
+        val coroutinesVm = CoroutinesImageViewerViewModel(
+            imageLoader = ScriptedImageLoader(
+                { coroutinesBeforeLoaded },
+                { error(failureMessage) },
+            ),
+        )
+
+        threadsVm.requestLoadImage(beforePath)
+        coroutinesVm.requestLoadImage(beforePath)
+        awaitStateEquals(vm = threadsVm, expected = ImageViewerScreenState.Ready(threadsBeforeLoaded))
+        awaitStateEquals(vm = coroutinesVm, expected = ImageViewerScreenState.Ready(coroutinesBeforeLoaded))
+
+        // Act
+        threadsVm.requestLoadImage(afterPath)
+        coroutinesVm.requestLoadImage(afterPath)
+
+        // Assert
+        awaitStateEquals(
+            vm = threadsVm,
+            expected = ImageViewerScreenState.Error(
+                message = failureMessage,
+                fallbackState = FallbackState.Ready(threadsBeforeLoaded),
+            ),
+        )
+        awaitStateEquals(
+            vm = coroutinesVm,
+            expected = ImageViewerScreenState.Error(
+                message = failureMessage,
+                fallbackState = FallbackState.Ready(coroutinesBeforeLoaded),
+            ),
+        )
+    }
 }
 
 private fun awaitStateEquals(
@@ -272,10 +343,6 @@ private class ScriptedImageLoader(vararg scriptedActions: ScriptedAction) : Imag
 
     init {
         scriptedActions.forEach { actions.put(it) }
-    }
-
-    fun enqueue(action: ScriptedAction) {
-        actions.put(action)
     }
 
     override fun loadBlocking(imagePath: String): LoadedImage {

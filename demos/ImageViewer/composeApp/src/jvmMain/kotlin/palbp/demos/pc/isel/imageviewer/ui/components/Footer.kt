@@ -19,18 +19,17 @@ fun Footer(
     onDismissError: () -> Unit,
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(88.dp),
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text("${stringResource(Res.string.footer_status_prefix)} ${statusText(state)}")
             Text("${stringResource(Res.string.footer_file_prefix)} ${currentImageLabel(state)}")
+            Text("${stringResource(Res.string.footer_resolution_prefix)} ${currentResolutionLabel(state)}")
             if (state is ImageViewerScreenState.Error) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("${stringResource(Res.string.footer_error_prefix)} ${state.message}")

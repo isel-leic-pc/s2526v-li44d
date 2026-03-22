@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
+import palbp.demos.pc.isel.imageviewer.processing.SupportedImageFileTypes
 import palbp.demos.pc.isel.imageviewer.ui.AppScreen
 import palbp.demos.pc.isel.imageviewer.viewmodel.CoroutinesImageViewerViewModel
 import palbp.demos.pc.isel.imageviewer.viewmodel.ImageViewerViewModel
@@ -46,8 +47,7 @@ fun App() {
 private fun chooseImageFilePath(): String? {
     val dialog = FileDialog(null as Frame?, "Open Image", FileDialog.LOAD).apply {
         filenameFilter = java.io.FilenameFilter { _, name ->
-            val extension = name.substringAfterLast('.', "").lowercase()
-            extension in setOf("png", "jpg", "jpeg")
+            SupportedImageFileTypes.isSupportedFileName(name)
         }
         isVisible = true
     }

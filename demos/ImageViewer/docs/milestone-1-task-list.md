@@ -136,44 +136,74 @@ Status:
 
 ## 6. Footer/Status Metadata Wiring
 
-- [ ] Show meaningful loaded-file metadata in footer (at minimum file name and resolution).
-- [ ] Keep status rendering aligned with state machine (`Idle/Loading/Error/Ready` semantics).
-- [ ] Preserve dismiss-error UX path.
+- [x] Show meaningful loaded-file metadata in footer (at minimum file name and resolution).
+- [x] Keep status rendering aligned with state machine (`Idle/Loading/Error/Ready` semantics).
+- [x] Preserve dismiss-error UX path.
 
 Acceptance criteria:
 
 - Footer information reflects current loaded image and current render/load state accurately.
 
+Status:
+
+- Completed on 2026-03-19.
+- Footer now displays:
+  - status
+  - file name
+  - resolution (`width x height`)
+- During `Loading`/`Error`, file metadata is derived from fallback state when available.
+- Dismiss-error action remains unchanged and non-blocking.
+
 ---
 
 ## 7. Tests for Milestone 1 Behavior
 
-- [ ] Update current ViewModel tests to new load-input type and state payloads.
-- [ ] Add tests for:
+- [x] Update current ViewModel tests to new load-input type and state payloads.
+- [x] Add tests for:
   - successful load from `NoImage`
   - successful load from `Ready` with correct fallback capture
   - decode failure -> `Error` + fallback
   - `dismissError` and `reset` invariants
-- [ ] Add focused tests for image-loader component (supported/unsupported/corrupt file cases).
+- [x] Add focused tests for image-loader component (supported/unsupported/corrupt file cases).
 
 Acceptance criteria:
 
 - Test suite covers the complete Milestone 1 state/load behavior.
 - No template-era assumptions remain in tests.
 
+Status:
+
+- Completed on 2026-03-20.
+- ViewModel transition tests updated for file-path semantics.
+- Added loader-focused suite for:
+  - supported format success
+  - unsupported extension
+  - missing file
+  - decode failure
+- Added cross-implementation checks to compare `Threads` and `Coroutines` behavior on success and fallback/error paths.
+
 ---
 
 ## 8. Final Verification Checklist (Milestone 1 Exit)
 
-- [ ] `./gradlew :composeApp:compileKotlinJvm` passes.
-- [ ] `./gradlew :composeApp:jvmTest` passes.
-- [ ] Manual run confirms: `Open` -> pick PNG/JPEG -> image preview appears.
-- [ ] Manual error checks confirm: invalid/corrupt file shows non-blocking error and can be dismissed.
-- [ ] No hardcoded sample-image loading path remains.
+- [x] `./gradlew :composeApp:compileKotlinJvm` passes.
+- [x] `./gradlew :composeApp:jvmTest` passes.
+- [x] Manual run confirms: `Open` -> pick PNG/JPEG -> image preview appears.
+- [x] Manual error checks confirm: invalid/corrupt file shows non-blocking error and can be dismissed.
+- [x] No hardcoded sample-image loading path remains.
 
 Exit condition for Milestone 1:
 
 - User can open and view real local PNG/JPEG files with explicit, tested state-machine transitions.
+
+Status:
+
+- Completed on 2026-03-22.
+- Automated verification:
+  - `export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./gradlew :composeApp:compileKotlinJvm`
+  - `export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./gradlew :composeApp:jvmTest`
+- Source verification:
+  - no hardcoded `sample-image.png` loading path remains in `composeApp/src/jvmMain/kotlin`.
 
 ---
 

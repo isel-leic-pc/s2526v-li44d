@@ -164,7 +164,7 @@ private fun MainContentPreview() {
             .padding(16.dp),
     ) {
         MainContent(
-            state = ImageViewerScreenState.Ready(createPlaceholderLoadedImage("sample-image.png")),
+            state = ImageViewerScreenState.Ready(createPlaceholderLoadedImage("preview-image.png")),
             selectedProcessingMode = ProcessingMode.Threads,
             onSelectProcessingMode = {},
         )
