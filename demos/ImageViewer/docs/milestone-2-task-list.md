@@ -16,7 +16,7 @@ This milestone must not yet implement coroutine processing (Milestone 3) or expo
 ## Deliverables
 
 - `ImagePipeline` contract for reusable filter execution.
-- `ThreadedImagePipeline` implementation using data partitioning with JVM threads.
+- `ThreadPerInvocationImagePipeline` implementation using data partitioning with JVM threads.
 - First filter model + algorithms:
   - grayscale (toggle/on-off)
   - brightness (toggle + numeric parameter)
@@ -46,12 +46,12 @@ Acceptance criteria:
 
 ## 2. Define `ImagePipeline` Abstraction
 
-- [ ] Add a processing contract that receives:
+- [x] Add a processing contract that receives:
   - source image
   - active filter configuration
   - optional execution settings needed for thread partitioning
-- [ ] Define deterministic processing semantics (same input/config -> same output).
-- [ ] Keep contract independent from UI concerns so both thread and coroutine implementations can share it later.
+- [x] Define deterministic processing semantics (same input/config -> same output).
+- [x] Keep contract independent from UI concerns so both thread and coroutine implementations can share it later.
 
 Acceptance criteria:
 
@@ -62,10 +62,10 @@ Acceptance criteria:
 
 ## 3. Implement Initial Filters (Grayscale + Brightness)
 
-- [ ] Implement grayscale as a deterministic per-pixel transformation.
-- [ ] Implement brightness with parameter clamping and neutral no-op behavior.
-- [ ] Enforce predictable filter composition order for Milestone 2.
-- [ ] Add small reusable pixel utilities for channel clamping/conversion as needed.
+- [x] Implement grayscale as a deterministic per-pixel transformation.
+- [x] Implement brightness with parameter clamping and neutral no-op behavior.
+- [x] Enforce predictable filter composition order for Milestone 2.
+- [x] Add small reusable pixel utilities for channel clamping/conversion as needed.
 
 Acceptance criteria:
 
@@ -74,12 +74,12 @@ Acceptance criteria:
 
 ---
 
-## 4. Implement `ThreadedImagePipeline`
+## 4. Implement `ThreadPerInvocationImagePipeline`
 
-- [ ] Implement data-parallel partitioning strategy (e.g., row chunks).
-- [ ] Process chunks on worker threads and merge into a single output image.
-- [ ] Ensure processing is off the UI thread and does not mutate input image buffers.
-- [ ] Provide clear error propagation for processing failures.
+- [x] Implement data-parallel partitioning strategy (e.g., row chunks).
+- [x] Process chunks on worker threads and merge into a single output image.
+- [x] Ensure processing is off the UI thread and does not mutate input image buffers.
+- [x] Provide clear error propagation for processing failures.
 
 Acceptance criteria:
 
@@ -162,7 +162,7 @@ Exit condition for Milestone 2:
 1. Domain model for filter configuration and invariants.
 2. Filter algorithms + shared pixel utilities.
 3. `ImagePipeline` contract.
-4. `ThreadedImagePipeline` implementation.
+4. `ThreadPerInvocationImagePipeline` implementation.
 5. ViewModel transition extension for processing events.
 6. UI controls + processed preview wiring.
 7. Tests.
