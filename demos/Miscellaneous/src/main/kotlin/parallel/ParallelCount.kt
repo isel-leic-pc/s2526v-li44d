@@ -1,4 +1,4 @@
-package palbp.demos.pc.isel
+package palbp.demos.pc.isel.parallel
 
 /**
  * Counts [value] occurrences across [dataset] using multithreaded partitioning

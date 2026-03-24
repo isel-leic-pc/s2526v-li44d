@@ -1,4 +1,4 @@
-package palbp.demos.pc.isel
+package palbp.demos.pc.isel.pattern
 
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -10,6 +10,9 @@ fun doSomething(idx: Int) {
         throw Exception()
 }
 
+/**
+ * Illustrates the Fork-Join pattern, in this case using a CountDownLatch.
+ */
 fun main() {
     val count = 10
     val latch = CountDownLatch(count)

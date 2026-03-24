@@ -1,6 +1,5 @@
-package palbp.demos.pc.isel
+package palbp.demos.pc.isel.synch
 
-import java.util.concurrent.CountDownLatch
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 

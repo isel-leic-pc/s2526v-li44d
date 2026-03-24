@@ -1,4 +1,4 @@
-import palbp.demos.pc.isel.SafeLinkedList
+import palbp.demos.pc.isel.threadsafety.SafeLinkedList
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

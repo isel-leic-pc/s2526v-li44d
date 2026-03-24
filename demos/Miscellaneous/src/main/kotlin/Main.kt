@@ -1,5 +1,6 @@
 package palbp.demos.pc.isel
 
+import palbp.demos.pc.isel.threadsafety.SafeLinkedList
 import kotlin.concurrent.thread
 
 

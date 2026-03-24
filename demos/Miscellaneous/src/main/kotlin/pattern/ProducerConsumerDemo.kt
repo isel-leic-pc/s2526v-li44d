@@ -1,4 +1,4 @@
-package palbp.demos.pc.isel
+package palbp.demos.pc.isel.pattern
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue

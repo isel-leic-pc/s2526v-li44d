@@ -1,4 +1,4 @@
-package palbp.demos.pc.isel
+package palbp.demos.pc.isel.threadsafety
 
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.thread

@@ -102,5 +102,5 @@
 	* No support for timeout or cancelation this week. That is a subject for next week
 
 * For reference:
-	-  Lecture video _(coming soon)_
+	- [Lecture video](https://www.youtube.com/watch?v=Yqg-jGvYiJw&list=PL8XxoCaL3dBi0fxcQdYiMydEYaQkOfzi5&index=9)
 	- [Assignment 1](./assignments/first-assignment.adoc)
