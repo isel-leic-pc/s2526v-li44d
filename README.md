@@ -78,8 +78,6 @@
 	- Control synchronization: synchronizers
 		- Purpose and motivation
 		- Example 1: `CountDownLatch`
-		- Example 2: producer-consumer with `BlockingQueue`
-			- `put`/`take`, bounded capacity, and backpressure
 - Part 2: Threading on the JVM: monitors
 	- Building custom synchronizers using Lampson and Redell monitors
 		- Purpose and motivation
@@ -98,7 +96,11 @@
 	- Multiple conditions (e.g., one per batch)
 	- Per-thread conditions for targeted wake-up
 	- Tradeoffs: time (i.e. reduced unnecessary wake-ups/context switches) vs space (memory consumption)
-* Demos: `UnboundedBuffer`, `UnboundedQueue` and `ManualResetEvent` (without support for timeout or cancelation)
+* Demos: 
+	* producer-consumer with `UnboundedBuffer`, `UnboundedQueue` and `BlockingQueue` (discussion of variants and the importance of bounded capacity to achieve backpressure)
+	* `ManualResetEvent` to illustrate another variant of the same pattern with space optimizations 
+	* No support for timeout or cancelation this week. That is a subject for next week
+
 * For reference:
 	-  Lecture video _(coming soon)_
 	- [Assignment 1](./assignments/first-assignment.adoc)
