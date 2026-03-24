@@ -85,6 +85,20 @@
 		- Purpose and motivation
 		- Lampson and Redell semantics
 	- Guarded blocks and condition predicates
+	- Demo: Implementing a `Latch` synchronizer (without support for timeout or cancelation)
 - For reference:
 	- [Lecture video](https://www.youtube.com/live/y8y7SxmH324?si=Up9JyhpS1O7TrMLJ)
 	- [Laboratory 3](labs/Lab3.md)
+
+### Week 5 - Threading on the JVM: monitors (continued)
+- Building custom synchronizers using Lampson and Redell monitors, continued
+	- Review: Recap of the simple `Latch` synchronizer from last week
+* The _Delegated Execution_ pattern (a.k.a. _kernel style_ approach)
+* Optimization of monitor-based solutions
+	- Multiple conditions (e.g., one per batch)
+	- Per-thread conditions for targeted wake-up
+	- Tradeoffs: time (i.e. reduced unnecessary wake-ups/context switches) vs space (memory consumption)
+* Demos: `UnboundedBuffer`, `UnboundedQueue` and `ManualResetEvent` (without support for timeout or cancelation)
+* For reference:
+	-  Lecture video _(coming soon)_
+	- [Assignment 1](./assignments/first-assignment.adoc)
