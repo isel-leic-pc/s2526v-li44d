@@ -14,7 +14,7 @@ import kotlin.concurrent.withLock
  *  - Too many context-switches may occur when waiting for an item to be available or when waiting for space in the
  *    buffer.
  */
-class BoundedQueue<T> {
+class BoundedQueue<T>(val capacity: Int = 1024) {
 
     private val buffer: LinkedList<T> = LinkedList()
 
@@ -28,13 +28,30 @@ class BoundedQueue<T> {
         guard.withLock {
 
             // Can proceed? (Fast path)
-            TODO()
+            if (buffer.isNotEmpty()) {
+                val item = buffer.removeFirst()
+                // Maybe signal blocked producer
+                if (requests.isNotEmpty()) {
+                    val prodReq = requests.removeFirst()
+                    val item = prodReq.value
+                    prodReq.value = null
+                    checkNotNull(item)
+                    buffer.addLast(item)
+                    condition.signalAll()
+                }
+                return item
+            }
+
+            val myRequest = Request<T>()
+            requests.addLast(myRequest)
 
             while (true) {
                 condition.await()
 
-                // Can proceed? (Slow path)
-                TODO()
+                val myValue = myRequest.value
+                if (myValue != null) {
+                    return myValue
+                }
             }
         }
     }
@@ -43,13 +60,28 @@ class BoundedQueue<T> {
         guard.withLock {
 
             // Can proceed? (Fast path)
-            TODO()
+            if (buffer.size != capacity) {
+                // Will a consumer be signaled?
+
+                if (requests.isNotEmpty()) {
+                    // Buffer must be empty.
+                    requests.removeFirst().value = value
+                    condition.signalAll()
+                } else {
+                    buffer.addLast(value)
+                }
+            }
+
+            val myRequest = Request(value)
+            requests.addLast(myRequest)
 
             while (true) {
                 condition.await()
 
                 // Can proceed? (Slow path)
-                TODO()
+                if (myRequest.value == null) {
+                    return
+                }
             }
         }
     }

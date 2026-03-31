@@ -1,6 +1,7 @@
 package palbp.demos.pc.isel.synch
 
 import java.util.LinkedList
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -20,26 +21,44 @@ class UnboundedBuffer<T> {
     private val guard = ReentrantLock()
     private val condition = guard.newCondition()
 
-
-    fun take(): T {
+    /**
+     * Blocks the calling thread until an item is available.
+      * @return the item or null if the timeout expires
+      * @throws InterruptedException if the thread is interrupted while waiting
+     */
+    @Throws(InterruptedException::class)
+    fun take(timeout: Long, unit: TimeUnit): T? {
         guard.withLock {
 
+            // Do we have an item?
             if (buffer.isNotEmpty()) {
                 return buffer.removeFirst()
             }
 
-            while (true) {
-                condition.await()
+            // Let's wait for it
+            var remainingNanos = unit.toNanos(timeout)
 
+            while (true) {
+                remainingNanos = condition.awaitNanos(remainingNanos)
+
+                // Do we have an item?
                 if (buffer.isNotEmpty()) {
                     return buffer.removeFirst()
+                }
+
+                // Has the timeout expired?
+                if (remainingNanos <= 0) {
+                    return null
                 }
             }
         }
     }
 
+    /**
+     * Adds an item to the buffer.
+     * @param value the item to add
+     */
     fun put(value: T): Unit = guard.withLock {
-
         buffer.addLast(value)
         condition.signal()
     }

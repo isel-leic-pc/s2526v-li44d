@@ -1,6 +1,6 @@
 ## Lab 2 — Threading on the JVM: Data Parallelism
 
-This lab focuses on the class of problems classified as **data parallelism**. The main goal is to help to understand how we can obtain **deterministic outcomes** even though concurrent execution is **non-deterministic** and interleavings vary across runs, as observed in [Lab 1](./Lab1.md). We will achieve this by structuring our computations according to the **fork–join pattern** (also known as **embarrassingly-parallel + reduce**), and by using **synchronization with completion** using `join()`.
+This lab focuses on the class of problems classified as **data parallelism**. The main goal is to help to understand how we can obtain **deterministic outcomes** even though concurrent execution is **non-deterministic** and interleavings vary across runs, as observed in [Lab 1](Laboratory%201.md). We will achieve this by structuring our computations according to the **fork–join pattern** (also known as **embarrassingly-parallel + reduce**), and by using **synchronization with completion** using `join()`.
 
 ### Learning outcomes
 By the end of this lab, you should be able to:
@@ -20,7 +20,7 @@ By the end of this lab, you should be able to:
 
 1. Create a thread named _worker_ that simulates work by sleeping for around 2 seconds and then terminates;
 2. Create a thread named _waiter_ that calls `worker.join()` and then prints a message such as "worker finished";
-3. Use your `startAndObserve` function from [Lab 1](./Lab1.md) to observe the lifecycle of _waiter_.
+3. Use your `startAndObserve` function from [Lab 1](Laboratory%201.md) to observe the lifecycle of _waiter_.
 
 Questions to reflect on:
 * Which thread state does _waiter_ enter while waiting for _worker_ to terminate?

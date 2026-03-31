@@ -27,7 +27,7 @@
 	- Interleaving of thread execution
 - For reference:
 	- [Lecture video](https://www.youtube.com/watch?v=B5s09qoZxYU)
-	- [Laboratory 1](./labs/Lab1.md)
+	- [Laboratory 1](Laboratory%201.md)
 
 ### Week 2 - Threading on the JVM: data parallelism
 - Review
@@ -45,7 +45,7 @@
 	- Discussion of the limitations of the "one thread per client" approach for our echo server
 - For reference:
 	- [Lecture video](https://www.youtube.com/watch?v=I1AuBdQSM-Y&list=PL8XxoCaL3dBi0fxcQdYiMydEYaQkOfzi5&index=2)
-	- [Laboratory 2](./labs/Lab2.md)
+	- [Laboratory 2](Laboratory%202.md)
 
 ### Week 3 - Threading on the JVM: thread safety
 - Thread safety
@@ -77,7 +77,7 @@
 		- Control synchronization
 	- Control synchronization: synchronizers
 		- Purpose and motivation
-		- Example 1: `CountDownLatch`
+		- Example 1: `ValueHolder`
 - Part 2: Threading on the JVM: monitors
 	- Building custom synchronizers using Lampson and Redell monitors
 		- Purpose and motivation
@@ -86,21 +86,47 @@
 	- Demo: Implementing a `Latch` synchronizer (without support for timeout or cancelation)
 - For reference:
 	- [Lecture video](https://www.youtube.com/live/y8y7SxmH324?si=Up9JyhpS1O7TrMLJ)
-	- [Laboratory 3](labs/Lab3.md)
+	- [Laboratory 3](Laboratory%203.md)
 
 ### Week 5 - Threading on the JVM: monitors (continued)
 - Building custom synchronizers using Lampson and Redell monitors, continued
-	- Review: Recap of the simple `Latch` synchronizer from last week
+	- Review: Recap of the simple `ValueHolder` synchronizer from last week
 * The _Delegated Execution_ pattern (a.k.a. _kernel style_ approach)
-* Optimization of monitor-based solutions
-	- Multiple conditions (e.g., one per batch)
-	- Per-thread conditions for targeted wake-up
-	- Tradeoffs: time (i.e. reduced unnecessary wake-ups/context switches) vs space (memory consumption)
 * Demos: 
-	* producer-consumer with `UnboundedBuffer`, `UnboundedQueue` and `BlockingQueue` (discussion of variants and the importance of bounded capacity to achieve backpressure)
+	* producer-consumer with `UnboundedBuffer`, `UnboundedQueue` and `BlockingQueue` (discussion of variants and the importance of bounded capacity to achieve back-pressure)
 	* `ManualResetEvent` to illustrate another variant of the same pattern with space optimizations 
 	* No support for timeout or cancelation this week. That is a subject for next week
 
 * For reference:
 	- [Lecture video](https://www.youtube.com/watch?v=Yqg-jGvYiJw&list=PL8XxoCaL3dBi0fxcQdYiMydEYaQkOfzi5&index=9)
 	- [Assignment 1](./assignments/first-assignment.adoc)
+
+### Week 6 - Threading on the JVM: monitors (timeout and cancelation)
+- 
+- Building custom synchronizers using Lampson and Redell monitors, continued
+	- Review: Recap of the _Delegated Execution_ pattern (a.k.a. _kernel style_ approach)
+- Monitor based solutions
+	- Why timeout and cancelation support matter
+	- Correct timeout handling
+		- Absolute deadline vs relative timeout
+		- Recompute remaining time after each wake-up
+	- Correct cancelation handling
+		- Interrupt protocol
+		- Cancelation of pending requests and state cleanup
+		- Avoiding leaks/stale waiters in request lists
+- Demos:
+	- `BlockingQueue` with support no support for cancelation or timeout and with no optimizations
+	- `UnboundedQueue` with support for cancelation and timeout with no optimizations
+	- `UnboundedQueue` with support for cancelation and timeout
+- Optimization of monitor-based solutions
+	- Multiple conditions (e.g., one per batch)
+	- Per-thread conditions for targeted wake-up
+	- Tradeoffs: time (i.e. reduced unnecessary wake-ups/context switches) vs space (memory consumption)
+	- Optimizing the `BlockingQueue` and `ManualResetEvent` implementations
+- Validation strategy
+	- Functional tests for success/timeout/cancelation paths
+	- Stress tests for races between signal, timeout, and cancelation
+- For reference:
+	- [Lecture video](https://www.youtube.com/live/RXe_xaZllHw?si=8HNsz_wJYC2vxNc4)
+	- [Assignment 1](./assignments/first-assignment.adoc)
+	- [[Laboratory 4]]
