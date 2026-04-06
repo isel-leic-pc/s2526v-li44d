@@ -1,6 +1,6 @@
 package palbp.demos.pc.isel.synch
 
-import java.util.LinkedList
+import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -24,6 +24,17 @@ class BoundedQueue<T>(val capacity: Int = 1024) {
     private data class Request<T>(var value: T? = null)
     private val requests: LinkedList<Request<T>> = LinkedList()
 
+    /**
+     * Returns the current number of elements in the queue.
+     * Thread-safe: acquires the guard lock to read the buffer size.
+     */
+    val size: Int
+        get() = guard.withLock { buffer.size }
+
+    /**
+     * Takes an element from the queue, blocking if the queue is empty.
+     * @return the element
+     */
     fun take(): T {
         guard.withLock {
 
@@ -56,6 +67,10 @@ class BoundedQueue<T>(val capacity: Int = 1024) {
         }
     }
 
+    /**
+     * Puts an element into the queue, blocking if the queue is full.
+     * @param value the element to be added to the queue
+     */
     fun put(value: T): Unit {
         guard.withLock {
 
@@ -70,6 +85,7 @@ class BoundedQueue<T>(val capacity: Int = 1024) {
                 } else {
                     buffer.addLast(value)
                 }
+                return
             }
 
             val myRequest = Request(value)

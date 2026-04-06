@@ -129,4 +129,4 @@
 - For reference:
 	- [Lecture video](https://www.youtube.com/live/RXe_xaZllHw?si=8HNsz_wJYC2vxNc4)
 	- [Assignment 1](./assignments/first-assignment.adoc)
-	- [[Laboratory 4]]
+	- [Laboratory 4](labs/Laboratory%204.md)
