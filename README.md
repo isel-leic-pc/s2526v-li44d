@@ -125,23 +125,18 @@
 	- [Lecture video](https://www.youtube.com/live/RXe_xaZllHw?si=8HNsz_wJYC2vxNc4)
 	- [Assignment 1](./assignments/first-assignment.adoc)
 	- [Laboratory 4](labs/Laboratory%204.md)
+### Week 7 - Easter break
 
-### Week 7 - Threading on the JVM: monitors (optimization) and thread pools
+### Week 8 - Threading on the JVM: monitors (continued) and thread pools
 - Part 1: Optimization of monitor-based synchronizers
 	- Review: timeout and cancelation support on monitor-based solutions
-	- Optimization techniques
-		- Multiple conditions (e.g., one per batch)
-		- Per-thread conditions for targeted wake-up
-		- Tradeoffs: time (fewer unnecessary wake-ups/context-switches) vs space (memory consumption)
-	- Applying optimizations to previously discussed synchronizers
-		- `UnboundedQueue`
-		- `ManualResetEvent`
+	- Demo: Implementing a custom thread pool
 - Part 2: Thread pools
 	- Purpose and motivation
 	- Fixed-size worker pools and work queues
 	- Back-pressure and bounded queues, revisited
 	- Compute-bound vs I/O-bound sizing considerations
 - For reference:
-	- Lecture video _(coming soon)_
+	- [Lecture video](https://www.youtube.com/live/NcNO6A56Yrc?si=TNveh6EUHu-BiQJs)
 	- [Assignment 1](./assignments/first-assignment.adoc)
 	- [Laboratory 4](labs/Laboratory%204.md)

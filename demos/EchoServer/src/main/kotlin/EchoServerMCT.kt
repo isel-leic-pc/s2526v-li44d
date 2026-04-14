@@ -1,43 +1,27 @@
 package palbp.demos.pc.isel
 
+import org.slf4j.Logger
 import java.net.ServerSocket
-import java.net.Socket
-import java.util.concurrent.atomic.AtomicInteger
+import kotlin.concurrent.thread
 
-fun main() {
-    val serverPort = 9000
+/**
+ * A multithreaded echo server that listens on a specified port and spawns a new thread for each client connection.
+ * This approach has several limitations:
+ * - It creates a new thread per client. This can lead to a high number of threads, which can cause performance issues.
+ * - Because the work is I/O bound, the thread is mostly blocked waiting for I/O operations.
+ */
+fun runEchoServerMT(port: Int, logger: Logger) {
+    logger.info("Starting multi-threaded echo server on port $port...")
     // Launches infinite server loop spawning per-client threads
-    ServerSocket(serverPort).use { serverSocket ->
-        println("Echo server running on port $serverPort")
+    ServerSocket(port).use { serverSocket ->
+        logger.info("Echo server running on port $port")
         var clientCounter = 0
         while (true) {
             val clientSocket = serverSocket.accept()
             clientCounter += 1
-            val thread = Thread(
-                { handleClient(clientSocket, clientCounter) },
-                "client-$clientCounter"
-            )
-            thread.start()
-        }
-    }
-}
-
-fun handleClient(socket: Socket, clientId: Int) {
-    println("Client $clientId connected")
-    socket.use { client ->
-        val input = client.getInputStream().bufferedReader()
-        val output = client.getOutputStream().bufferedWriter()
-        try {
-            var line: String?
-            while (input.readLine().also { line = it } != null) {
-                output.write(line)
-                output.newLine()
-                output.flush()
+            thread(name = "client-$clientCounter") {
+                handleClient(socket = clientSocket, clientId = clientCounter, logger = logger)
             }
-        } catch (e: Exception) {
-            println("Error with client $clientId: ${e.message}")
-        } finally {
-            println("Client $clientId disconnected")
         }
     }
 }

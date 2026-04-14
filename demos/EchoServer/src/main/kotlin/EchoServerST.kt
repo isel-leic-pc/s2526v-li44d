@@ -1,24 +1,31 @@
 package palbp.demos.pc.isel
 
+import org.slf4j.Logger
 import java.net.ServerSocket
 
-fun runEchoServerST(port: Int) {
-    println("Starting single-threaded echo server on port $port...")
+/**
+ * Runs a single-threaded echo server that listens on a specified port.
+ * This is not a realistic implementation of a server.
+ */
+fun runEchoServerST(port: Int, logger: Logger) {
+    logger.info("Starting single-threaded echo server on port $port...")
     ServerSocket(port).use { serverSocket ->
         while (true) {
-            println("Waiting for a client...")
+            logger.info("Waiting for a client...")
             serverSocket.accept().use { clientSocket ->
-                println("Client connected: ${clientSocket.inetAddress.hostAddress}")
+                logger.info("Client connected: ${clientSocket.inetAddress.hostAddress}")
                 val input = clientSocket.getInputStream().bufferedReader()
                 val output = clientSocket.getOutputStream().bufferedWriter()
                 input.lineSequence().forEach { line ->
-                    println("Received: $line")
-                    output.write("Echo: $line\n")
-                    output.flush()
+                    logger.info("Received: $line")
+                    with(output) {
+                        write("echo> $line")
+                        newLine()
+                        flush()
+                    }
                 }
-                println("Client disconnected.")
+                logger.info("Client disconnected.")
             }
         }
     }
-
 }
