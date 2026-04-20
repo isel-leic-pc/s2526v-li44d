@@ -125,6 +125,7 @@
 	- [Lecture video](https://www.youtube.com/live/RXe_xaZllHw?si=8HNsz_wJYC2vxNc4)
 	- [Assignment 1](./assignments/first-assignment.adoc)
 	- [Laboratory 4](labs/Laboratory%204.md)
+
 ### Week 7 - Easter break
 
 ### Week 8 - Threading on the JVM: monitors (continued) and thread pools
@@ -140,3 +141,18 @@
 	- [Lecture video](https://www.youtube.com/live/NcNO6A56Yrc?si=TNveh6EUHu-BiQJs)
 	- [Assignment 1](./assignments/first-assignment.adoc)
 	- [Laboratory 4](labs/Laboratory%204.md)
+
+### Week 9 - Structured Concurrency in Kotlin: Coroutines and Continuations
+- Structured concurrency in Kotlin
+	- Motivation and goals
+	- Coroutines and suspending functions
+- Coroutines as sequences of continuations
+	- Continuation-passing style (CPS)
+	- Suspension points and resumption
+- Demos:
+	- Hello Coroutines - launching coroutines using `launch` inside a `runBlocking` scope
+	- Hello Continuations - manual CPS transformation and execution using `startCoroutine`, `suspendCoroutine` and the `Continuation` interface
+	- Lets yield - Implementing our home made `yield` function to illustrate the concept of suspension and resumption while scheduling continuations on the same thread (first in the main thread and then on a single-threaded executor)
+- For reference:
+	- Lecture video _(coming soon)_
+	- [Assignment 2](./assignments/second-assignment.adoc)
