@@ -152,7 +152,21 @@
 - Demos:
 	- Hello Coroutines - launching coroutines using `launch` inside a `runBlocking` scope
 	- Hello Continuations - manual CPS transformation and execution using `startCoroutine`, `suspendCoroutine` and the `Continuation` interface
-	- Lets yield - Implementing our home made `yield` function to illustrate the concept of suspension and resumption while scheduling continuations on the same thread (first in the main thread and then on a single-threaded executor)
+- For reference:
+	- [Lecture video](https://www.youtube.com/live/pEZBTzOsihU?si=ieeKA5dLQtL717WF)
+	- [Assignment 2](./assignments/second-assignment.adoc)
+
+
+### Week 10 - Structured Concurrency in Kotlin: Coroutines and Continuations (continued)
+- Coroutines as sequences of continuations
+	- Continuation-passing style (CPS)
+	- Suspension points and resumption
+	- Cooperative scheduling and yielding
+- Demos:
+	- Let's yield - Implementing our homemade `yield` function to illustrate the concept of suspension and resumption while scheduling continuations on the same thread (first in the main thread and then on a single-threaded executor)
+	- Let's delay - Implementing our homemade `delay` function to illustrate the concept of suspension and resumption while scheduling continuations on ScheduledExecutorService  (first with a single-threaded scheduled executor and then with a multithreaded one to illustrate the non-determinism of resumption when multiple continuations are scheduled for the same time)
 - For reference:
 	- Lecture video _(coming soon)_
 	- [Assignment 2](./assignments/second-assignment.adoc)
+
+

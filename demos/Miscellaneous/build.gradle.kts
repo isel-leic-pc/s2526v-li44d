@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    kotlin("jvm") version "2.3.0"
+    kotlin("jvm") version "2.3.21"
+    id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
 }
 
 group = "palbp.demos.pc.isel"
@@ -17,10 +20,16 @@ dependencies {
     testImplementation(kotlin("test"))
 }
 
-kotlin {
-    jvmToolchain(23)
-}
-
 tasks.test {
     useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(25)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_25
+    }
 }
