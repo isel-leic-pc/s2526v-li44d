@@ -168,3 +168,20 @@
 - For reference:
 	- [Lecture video](https://www.youtube.com/watch?v=hN8ugmS9T0E)
 	- [Assignment 2](./assignments/second-assignment.adoc)
+
+### Week 11 - Structured Concurrency in Kotlin: Coroutines and Cancelation (preview)
+- Main elements of structured concurrency
+	- Scopes and context
+	- Job hierarchies and cancellation propagation
+		- cooperative cancellation
+		- Supervision and non-cancellable contexts
+- Synchronization of coroutines
+	- Via `join` and `await` on `Job` and `Deferred`
+	- Via custom synchronizers using `suspendCancellableCoroutine` and `CancellableContinuation`
+- Demos:
+	- Hello Structured Concurrency - launching coroutines with parent-child relationships and demonstrating cancellation propagation (with and without supervision)
+	- Building a custom `SuspendingLatch` synchronizer with support for cancellation
+
+- For reference:
+	- Lecture video _(coming soon)_
+	- [Assignment 2](./assignments/second-assignment.adoc)
