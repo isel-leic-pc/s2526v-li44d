@@ -166,7 +166,5 @@
 	- Let's yield - Implementing our homemade `yield` function to illustrate the concept of suspension and resumption while scheduling continuations on the same thread (first in the main thread and then on a single-threaded executor)
 	- Let's delay - Implementing our homemade `delay` function to illustrate the concept of suspension and resumption while scheduling continuations on ScheduledExecutorService  (first with a single-threaded scheduled executor and then with a multithreaded one to illustrate the non-determinism of resumption when multiple continuations are scheduled for the same time)
 - For reference:
-	- Lecture video _(coming soon)_
+	- [Lecture video](https://www.youtube.com/watch?v=hN8ugmS9T0E)
 	- [Assignment 2](./assignments/second-assignment.adoc)
-
-
